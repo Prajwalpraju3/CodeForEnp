@@ -6,4 +6,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="header">Please enter your header..</string>
+    <string name="dic">Please enter the description</string>
+    <string name="submit">Submit</string>
 </resources>
