@@ -43,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean addContact(MyModel model) {
+    public boolean addData(MyModel model) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(HEADER, model.getHeadder());
