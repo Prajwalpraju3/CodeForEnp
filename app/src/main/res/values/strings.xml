@@ -9,4 +9,5 @@
     <string name="header">Please enter your header..</string>
     <string name="dic">Please enter the description</string>
     <string name="submit">Submit</string>
+    <string name="select">Select</string>
 </resources>
