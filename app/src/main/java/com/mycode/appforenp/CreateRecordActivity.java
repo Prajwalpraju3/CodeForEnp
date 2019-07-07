@@ -23,14 +23,15 @@ import com.mycode.appforenp.database.DatabaseHelper;
 import com.mycode.appforenp.databinding.ActivityCreateRecordBinding;
 import com.mycode.appforenp.models.MyModel;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class CreateRecordActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final int PERMISSION_REQUEST_CAMERA = 111;
     ActivityCreateRecordBinding binding;
-    private static final int PERMISSION_REQUEST_ = 1;
-    private static final int CAMERA = 7;
-    private static final int GALLERY = 2;
+    private static final int CAMERA_CLICK = 7;
+    private static final int GALLERY_CLICK = 2;
     Bitmap finalbitmap;
 
     @Override
@@ -69,7 +70,12 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
     private void addDatatoDataBase(String header, String dec, Bitmap bitmap) {
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
-        MyModel myModel = new MyModel(header, dec, bitmap);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        bitmap.recycle();
+
+        MyModel myModel = new MyModel(header, dec, byteArray);
 
         if (databaseHelper.addData(myModel)) {
             Intent data = new Intent();
@@ -92,11 +98,13 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
                             case 0:
                                 Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                startActivityForResult(pickPhoto, GALLERY);
+                                startActivityForResult(pickPhoto, GALLERY_CLICK);
                                 break;
                             case 1:
                                 if (ActivityCompat.checkSelfPermission(CreateRecordActivity.this, Manifest.permission.CAMERA)
                                         == PackageManager.PERMISSION_GRANTED) {
+                                    // Permission is already available, start camera preview
+
                                     startCamera();
                                 } else {
                                     // Permission is missing and must be requested.
@@ -114,27 +122,30 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void requestCameraPermission() {
-        // Permission has not been granted and must be requested.
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.CAMERA)) {
+            // Request the permission
             ActivityCompat.requestPermissions(CreateRecordActivity.this,
                     new String[]{Manifest.permission.CAMERA},
-                    PERMISSION_REQUEST_);
-        }
+                    PERMISSION_REQUEST_CAMERA);
+        } else {
 
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
+        }
     }
 
     private void startCamera() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, CAMERA);
+            startActivityForResult(takePictureIntent, CAMERA_CLICK);
         }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         switch (requestCode) {
-            case GALLERY:
+            case GALLERY_CLICK:
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = imageReturnedIntent.getData();
                     Bitmap bitmap = null;
@@ -151,7 +162,7 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
                 }
 
                 break;
-            case CAMERA:
+            case CAMERA_CLICK:
                 if (resultCode == RESULT_OK) {
                     DrawImage((Bitmap) imageReturnedIntent.getExtras().get("data"));
                 }
@@ -168,9 +179,16 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        if (requestCode == PERMISSION_REQUEST_) {
+        // BEGIN_INCLUDE(onRequestPermissionsResult)
+        if (requestCode == PERMISSION_REQUEST_CAMERA) {
+            // Request for camera permission.
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission has been granted. Start camera preview Activity.
+
                 startCamera();
+            } else {
+                // Permission request was denied.
+
             }
         }
     }

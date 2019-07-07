@@ -5,9 +5,9 @@ import android.graphics.Bitmap;
 public class MyModel {
 
     private String headder,dis;
-    private Bitmap bitmap;
+    private byte[] bitmap;
 
-    public MyModel(String headder, String dis, Bitmap bitmap) {
+    public MyModel(String headder, String dis, byte[] bitmap) {
         this.headder = headder;
         this.dis = dis;
         this.bitmap = bitmap;
@@ -29,11 +29,11 @@ public class MyModel {
         this.dis = dis;
     }
 
-    public Bitmap getBitmap() {
+    public byte[] getBitmap() {
         return bitmap;
     }
 
-    public void setBitmap(Bitmap bitmap) {
+    public void setBitmap(byte[] bitmap) {
         this.bitmap = bitmap;
     }
 }

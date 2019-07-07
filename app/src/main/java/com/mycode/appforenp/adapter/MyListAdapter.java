@@ -1,6 +1,8 @@
 package com.mycode.appforenp.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +41,8 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.CustomView
         MyModel model = myModel.get(position);
         holder.header.setText(model.getHeadder());
         holder.dec.setText(model.getDis());
-        holder.iv_pic.setImageBitmap(model.getBitmap());
+        Bitmap bmp = BitmapFactory.decodeByteArray(model.getBitmap(), 0,model.getBitmap().length);
+        holder.iv_pic.setImageBitmap(bmp);
 
     }
 

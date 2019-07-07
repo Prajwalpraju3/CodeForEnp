@@ -48,7 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(HEADER, model.getHeadder());
         contentValues.put(DESCRIPTION, model.getDis());
-        contentValues.put(BITMAP, model.getBitmap().toString());
+        contentValues.put(BITMAP, model.getBitmap());
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
@@ -71,7 +71,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(HEADER, model.getHeadder());
         contentValues.put(DESCRIPTION, model.getDis());
-        contentValues.put(BITMAP, model.getBitmap().toString());
+        contentValues.put(BITMAP, model.getBitmap());
 
 
         int update = db.update(TABLE_NAME, contentValues, ID + " = ? ", new String[] {String.valueOf(id)} );

@@ -1,6 +1,7 @@
 package com.mycode.appforenp;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -9,7 +10,10 @@ import com.google.android.material.snackbar.Snackbar;
 import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
+import com.mycode.appforenp.adapter.MyListAdapter;
+import com.mycode.appforenp.database.DatabaseHelper;
 import com.mycode.appforenp.databinding.ActivityMainBinding;
+import com.mycode.appforenp.models.MyModel;
 
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
@@ -23,6 +27,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -55,6 +61,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void getDataFramDatabase() {
+        ArrayList<MyModel> items = new ArrayList<>();
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        Cursor cursor = databaseHelper.getAllData();
+        //iterate through all the rows contained in the database
+        if(!cursor.moveToNext()){
+            binding.aplayout.content.tvInfo.setVisibility(View.VISIBLE);
+            binding.aplayout.content.tvInfo.setText(getString(R.string.no_data));
+        }else {
+            binding.aplayout.content.tvInfo.setVisibility(View.GONE);
+            while(cursor.moveToNext()){
+                items.add(new MyModel(
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getBlob(3)
+                ));
+            }
+
+            MyListAdapter adapter = new MyListAdapter(items,this);
+            binding.aplayout.content.rvList.setAdapter(adapter);
+        }
+
+
 
     }
 
@@ -121,8 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (resultCode == RESULT_OK) {
                 String returnedResult = data.getData().toString();
                 Toast.makeText(this,returnedResult,Toast.LENGTH_SHORT).show();
-                // OR
-                // String returnedResult = data.getDataString();
+                getDataFramDatabase();
             }
         }
     }
