@@ -55,7 +55,7 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.CustomView
 
         TextView header,dec;
         ImageView iv_pic;
-        public CustomViewHolder(@NonNull View itemView) {
+        CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             header = (TextView)itemView.findViewById(R.id.tv_header);
             dec = (TextView)itemView.findViewById(R.id.tv_dec);

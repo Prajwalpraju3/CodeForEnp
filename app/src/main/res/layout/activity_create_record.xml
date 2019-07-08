@@ -30,6 +30,8 @@
                 android:id="@+id/et_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="text"
+                android:imeOptions="actionNext"
                 android:hint="@string/header"
                 android:singleLine="true" />
 
@@ -37,6 +39,9 @@
                 android:id="@+id/et_dic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="text"
+                android:imeOptions="actionDone"
+                android:layout_marginBottom="@dimen/fab_margin"
                 android:hint="@string/dic"
                 android:maxHeight="200dp" />
 
@@ -47,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="@dimen/fab_margin"
+                android:layout_margin="@dimen/fab_margin"
                 android:text="@string/submit" />
         </LinearLayout>
 
