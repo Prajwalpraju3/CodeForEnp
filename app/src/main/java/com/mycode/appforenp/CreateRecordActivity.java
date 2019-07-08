@@ -151,11 +151,11 @@ public class CreateRecordActivity extends AppCompatActivity implements View.OnCl
                     Bitmap bitmap = null;
                     try {
                         bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                        Matrix matrix = new Matrix();
-                        matrix.postRotate(90);
-                        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-                        binding.ivProfile.setImageBitmap(rotatedBitmap);
-                        DrawImage(rotatedBitmap);
+//                        Matrix matrix = new Matrix();
+//                        matrix.postRotate(90);
+//                        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                        binding.ivProfile.setImageBitmap(bitmap);
+                        DrawImage(bitmap);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
